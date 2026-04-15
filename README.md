@@ -2,6 +2,16 @@
 
 Este projeto é uma aplicação web de gestão comercial desenvolvida para centralizar e automatizar rotinas críticas de operação, como controle de estoque, registro de compras e vendas, acompanhamento financeiro e análise de indicadores em dashboard. Construído com Django e Django REST Framework, o sistema foi estruturado com foco em segurança, integridade dos dados, usabilidade e escalabilidade, contemplando autenticação JWT, validações de regras de negócio, relatórios gerenciais (PDF/Excel), suporte a fluxos online/offline e arquitetura preparada para ambientes de produção.
 
+## Interface do Sistema
+
+### Visão Geral do Frontend
+
+<img src="static/img/image%20(6).png" alt="Tela 1 - Frontend" width="100%" />
+
+<img src="static/img/image%20(7).png" alt="Tela 2 - Frontend" width="100%" />
+
+<img src="static/img/image%20(8).png" alt="Tela 3 - Frontend" width="100%" />
+
 ## Funcionalidades
 
 - **Autenticação JWT**: Login seguro com tokens.
