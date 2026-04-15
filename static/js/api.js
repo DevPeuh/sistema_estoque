@@ -1,7 +1,3 @@
-/**
- * API Service for Sistema de Gestão
- */
-
 const API_BASE_URL = '/api';
 const OFFLINE_QUEUE_KEY = 'offline_queue';
 
@@ -120,7 +116,7 @@ const api = {
         return !!localStorage.getItem('access_token');
     },
 
-    // Offline Sync Logic
+    // Sincronização Off-line
     getOfflineQueue() {
         return JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]');
     },
@@ -272,7 +268,7 @@ const api = {
         return await this.request('/dashboard/health/');
     },
 
-    // Products
+    // Produto
     async getProducts() {
         return await this.request('/produtos/');
     },
@@ -297,7 +293,7 @@ const api = {
         });
     },
 
-    // Categories and Units
+    // Categoria
     async getCategories() {
         return await this.request('/categorias/');
     },
@@ -316,7 +312,6 @@ const api = {
         return await this.request('/unidades-de-medida/');
     },
 
-    // Suppliers
     async getSuppliers() {
         return await this.request('/compras/fornecedores/');
     },
@@ -332,7 +327,7 @@ const api = {
         });
     },
 
-    // Clients
+    // Cliente
     async getClients() {
         return await this.request('/vendas/clientes/');
     },
@@ -349,7 +344,7 @@ const api = {
         return await this.request(`/vendas/clientes/${id}/`, { method: 'DELETE' });
     },
 
-    // Sales
+    // venda
     async getSales() {
         return await this.request('/vendas/vendas/');
     },
@@ -360,7 +355,7 @@ const api = {
         });
     },
 
-    // Purchases
+    // Compra
     async getPurchases() {
         return await this.request('/compras/compras/');
     },
@@ -371,7 +366,7 @@ const api = {
         });
     },
 
-    // Financial - Accounts Payable
+    // Contas a Pagar
     async getAccountsPayable(filters = {}) {
         const params = new URLSearchParams(filters).toString();
         const query = params ? `?${params}` : '';
@@ -387,7 +382,7 @@ const api = {
         return await this.request('/compras/contas-pagar/summary/');
     },
 
-    // Financial - Accounts Receivable
+    // Contas a Receber
     async getAccountsReceivable(filters = {}) {
         const params = new URLSearchParams(filters).toString();
         const query = params ? `?${params}` : '';
@@ -403,7 +398,7 @@ const api = {
         return await this.request('/vendas/contas-receber/summary/');
     },
 
-    // Reports
+    // Relatório
     async getReports(type) {
         return await this.request(`/reports/${type}/`);
     }

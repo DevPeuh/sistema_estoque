@@ -12,7 +12,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
     <div id="app" class="min-h-screen flex flex-col">
-        <!-- Login Screen -->
+        <!-- Login -->
         <div id="login-screen" class="hidden flex-grow flex items-center justify-center p-4">
             <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
                 <div class="text-center mb-8">
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <!-- Main Dashboard Screen -->
+        <!-- Dashboard -->
         <div id="main-screen" class="hidden flex flex-grow h-screen overflow-hidden">
             <!-- Sidebar -->
             <div id="mobile-sidebar-overlay" class="hidden fixed inset-0 bg-black/40 z-[60]"></div>
@@ -93,7 +93,7 @@
                 </div>
             </aside>
 
-            <!-- Main Content Area -->
+            <!-- Content -->
             <main class="flex-grow flex flex-col bg-gray-50 overflow-hidden">
                 <header id="main-header" class="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8 flex-shrink-0">
                     <h2 id="current-view-title" class="text-xl font-bold text-gray-800">Dashboard</h2>
@@ -116,13 +116,12 @@
                 </header>
 
                 <div id="view-container" class="p-8 overflow-y-auto flex-grow">
-                    <!-- Dynamic content injected here -->
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Modelos -->
     <div id="modal-container" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
         <div id="modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 relative">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
@@ -132,7 +131,7 @@
         </div>
     </div>
 
-    <!-- Notification Toast -->
+    <!-- Notificação (tentando)-->
     <div id="toast" class="fixed bottom-8 right-8 transform translate-y-20 opacity-0 transition-all duration-300 z-[100]">
         <div id="toast-content" class="bg-white px-6 py-4 rounded-xl shadow-2xl border border-gray-100 flex items-center gap-4">
             <div id="toast-icon" class="w-8 h-8 rounded-full flex items-center justify-center text-white"></div>

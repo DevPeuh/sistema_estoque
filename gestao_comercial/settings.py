@@ -99,11 +99,11 @@ if postgres_password:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('POSTGRES_DB', 'sistema_estoque_prod'),
-            'USER': os.environ.get('POSTGRES_USER', 'estoque_app'),
+            'NAME': os.environ.get('POSTGRES_DB', ''),
+            'USER': os.environ.get('POSTGRES_USER', ''),
             'PASSWORD': postgres_password,
             'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
-            'PORT': os.environ.get('POSTGRES_PORT', '5433'),
+            'PORT': os.environ.get('POSTGRES_PORT', ''),
             'CONN_MAX_AGE': 600,
             'OPTIONS': {'sslmode': 'require'} if not DEBUG else {},
         }

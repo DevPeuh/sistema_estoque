@@ -605,12 +605,14 @@ function resolveMutationResult(result, successMessage, queuedMessage) {
 function openModal(content) {
     const modal = document.getElementById('modal-container');
     const body = document.getElementById('modal-body');
+    modalCleanupCallbacks.clear();
     body.innerHTML = content;
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
 
-function closeModal() {
+async function closeModal() {
+    await runModalCleanups();
     const modal = document.getElementById('modal-container');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
@@ -645,6 +647,10 @@ function formatDocumentDigits(value) {
     return String(value || '').replace(/\D/g, '');
 }
 
+function toList(data) {
+    return Array.isArray(data) ? data : (data?.results || []);
+}
+
 function formatContact(email, phone) {
     const normalizedEmail = (email && String(email).toLowerCase() !== 'null') ? String(email).trim() : '';
     const normalizedPhone = (phone && String(phone).toLowerCase() !== 'null') ? String(phone).trim() : '';
@@ -658,6 +664,26 @@ function formatContact(email, phone) {
         return normalizedPhone;
     }
     return '-';
+}
+
+const modalCleanupCallbacks = new Set();
+
+function registerModalCleanup(callback) {
+    if (typeof callback === 'function') {
+        modalCleanupCallbacks.add(callback);
+    }
+}
+
+async function runModalCleanups() {
+    const callbacks = Array.from(modalCleanupCallbacks);
+    modalCleanupCallbacks.clear();
+    for (const callback of callbacks) {
+        try {
+            await callback();
+        } catch (_) {
+            // Ignore cleanup errors to avoid blocking modal close.
+        }
+    }
 }
 
 async function openQuickCategoryModal(onCreated) {
@@ -857,7 +883,7 @@ async function openProductForm(product = null) {
     try {
         const categoriesData = await api.getCategories();
         
-        const categories = Array.isArray(categoriesData) ? categoriesData : (categoriesData.results || []);
+        const categories = toList(categoriesData);
         
         const isEdit = !!product;
         const title = isEdit ? 'Editar Produto' : 'Novo Produto';
@@ -927,7 +953,7 @@ async function openProductForm(product = null) {
         document.getElementById('quick-add-category-btn').addEventListener('click', () => {
             openQuickCategoryModal(async (newCategory) => {
                 const categoriesRefreshed = await api.getCategories();
-                const list = Array.isArray(categoriesRefreshed) ? categoriesRefreshed : (categoriesRefreshed.results || []);
+                const list = toList(categoriesRefreshed);
                 categorySelect.innerHTML = list.map(c => `<option value="${c.id}" ${newCategory?.id === c.id ? 'selected' : ''}>${c.nome}</option>`).join('');
                 if (newCategory?.id) {
                     categorySelect.value = String(newCategory.id);
@@ -989,15 +1015,12 @@ async function openProductForm(product = null) {
             }
         });
 
-        // Ensure scanner stops when modal closes
-        const originalCloseModal = window.closeModal;
-        window.closeModal = async () => {
+        registerModalCleanup(async () => {
             if (html5QrCode) {
                 await html5QrCode.stop();
+                html5QrCode = null;
             }
-            originalCloseModal();
-            window.closeModal = originalCloseModal;
-        };
+        });
         
         document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1087,8 +1110,8 @@ async function openSaleForm() {
     try {
         const clientsData = await api.getClients();
         const productsData = await api.getProducts();
-        const clients = Array.isArray(clientsData) ? clientsData : (clientsData.results || []);
-        const products = Array.isArray(productsData) ? productsData : (productsData.results || []);
+        const clients = toList(clientsData);
+        const products = toList(productsData);
 
         let itemsHtml = '<div id="sale-items-container" class="space-y-4"></div>';
 
@@ -1292,8 +1315,8 @@ async function openPurchaseForm() {
     try {
         const suppliersData = await api.getSuppliers();
         const productsData = await api.getProducts();
-        const suppliers = Array.isArray(suppliersData) ? suppliersData : (suppliersData.results || []);
-        const products = Array.isArray(productsData) ? productsData : (productsData.results || []);
+        const suppliers = toList(suppliersData);
+        const products = toList(productsData);
 
         let itemsHtml = '<div id="purchase-items-container" class="space-y-4"></div>';
 
@@ -1350,7 +1373,7 @@ async function openPurchaseForm() {
         document.getElementById('quick-add-supplier-btn').addEventListener('click', () => {
             openQuickSupplierModal(async (newSupplier) => {
                 const suppliersRefreshed = await api.getSuppliers();
-                const list = Array.isArray(suppliersRefreshed) ? suppliersRefreshed : (suppliersRefreshed.results || []);
+                const list = toList(suppliersRefreshed);
                 supplierSelect.innerHTML = list.map(s => `<option value="${s.id}" ${newSupplier?.id === s.id ? 'selected' : ''}>${s.razao_social}</option>`).join('');
                 if (newSupplier?.id) {
                     supplierSelect.value = String(newSupplier.id);

@@ -7,7 +7,6 @@ class AccessLogMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         
-        # Log only authenticated requests or certain paths if needed
         AccessLog.objects.create(
             user=request.user if request.user.is_authenticated else None,
             ip_address=self.get_client_ip(request),
