@@ -1,0 +1,56 @@
+# Python cache/bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Django/local databases and artifacts
+*.sqlite3
+*.sqlite
+db.sqlite3
+db_dev.sqlite3
+media/
+staticfiles/
+
+# Logs, backups and dumps
+*.log
+*.dump
+*.sql.gz
+*.bak
+*.tmp
+backups/
+data_migration.json
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Certificates and private keys
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+
+# Tutorial/documentation folders (não versionar no repo público)
+docs/
+
+# Scripts operacionais locais (não versionar no repo público)
+scripts/
